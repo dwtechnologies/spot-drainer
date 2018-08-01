@@ -1,5 +1,5 @@
 Transform: AWS::Serverless-2016-10-31
-Description: Spot Drainer
+Description: Spot Drainer - drain spot ECS instances before interruption
 
 Resources:
   spotDrainerRole:
