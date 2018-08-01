@@ -5,7 +5,7 @@ The two-minute warning for Spot instances is available via Amazon CloudWatch Eve
 
 This Lambda function reacts to such CloudWatch event annd set a spot ec2 instance to **DRAINING** state if the instance is used in an ECS cluster.
 
-CloudWatchEvent
+##### CloudWatchEvent
 
 ```json
 {
@@ -28,7 +28,7 @@ CloudWatchEvent
 
 
 
-Build
+##### Build
 
 ```sh
 cd source; GOOS=linux go build -o main handler.go && zip deployment.zip main
@@ -40,7 +40,7 @@ aws cloudformation package \
 
 
 
-Deploy
+##### Deploy
 
 ```sh
 aws cloudformation deploy \
@@ -51,7 +51,7 @@ aws cloudformation deploy \
 ```
 
 
-Test (SAM CLI)
+##### Test (SAM CLI)
 ```sh
-AWS_PROFILE=<someprofile> sam local invoke spotDrainer --event sample_event.json --template sam.yaml
+AWS_PROFILE=<some-profile> sam local invoke spotDrainer --event sample_event.json --template sam.yaml
 ```
