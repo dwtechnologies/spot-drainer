@@ -67,14 +67,14 @@ func newECSClient() (*ecs.ECS, error) {
 
 func getClusterAndContainerInstance(client *ecs.ECS, instanceID string) (cluster, containerInstanceArn string, err error) {
 	// list ecs clusters
-	res, err := client.ListClustersRequest(&ecs.ListClustersInput{}).Send()
+	r, err := client.ListClustersRequest(&ecs.ListClustersInput{}).Send()
 	if err != nil {
 		return "", "", err
 	}
 
-	for _, cluster := range res.ClusterArns {
+	for _, cluster := range r.ClusterArns {
 		// list container instances
-		res, err := client.ListContainerInstancesRequest(&ecs.ListContainerInstancesInput{
+		r, err := client.ListContainerInstancesRequest(&ecs.ListContainerInstancesInput{
 			Cluster: aws.String(cluster),
 			Status:  "ACTIVE",
 		}).Send()
@@ -83,10 +83,10 @@ func getClusterAndContainerInstance(client *ecs.ECS, instanceID string) (cluster
 		}
 
 		// describe container instances
-		if len(res.ContainerInstanceArns) > 0 {
+		if len(r.ContainerInstanceArns) > 0 {
 			resci, err := client.DescribeContainerInstancesRequest(&ecs.DescribeContainerInstancesInput{
 				Cluster:            aws.String(cluster),
-				ContainerInstances: res.ContainerInstanceArns,
+				ContainerInstances: r.ContainerInstanceArns,
 			}).Send()
 			if err != nil {
 				return "", "", err
