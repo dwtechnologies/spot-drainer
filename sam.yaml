@@ -2,48 +2,26 @@ Transform: AWS::Serverless-2016-10-31
 Description: Spot Drainer - drain spot ECS instances before interruption
 
 Resources:
-  spotDrainerRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          -
-            Effect: Allow
-            Principal:
-              Service:
-                - "lambda.amazonaws.com"
-            Action:
-              - "sts:AssumeRole"
-      Path: "/"
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-      Policies:
-        - PolicyName: "LambdaRole"
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              -
-                Effect: "Allow"
-                Action:
-                  - "ecs:ListClusters"
-                  - "ecs:ListContainerInstances"
-                  - "ecs:DescribeContainerInstances"
-                  - "ecs:UpdateContainerInstancesState"
-                Resource: "*"
-
   spotDrainer:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: spot-drainer
-      Description: "Remember to drain your spot fleet"
+      Description: "remember to drain your spot fleet"
       Handler: main
-      Role: !GetAtt spotDrainerRole.Arn
       Runtime: go1.x
-      Timeout: 10
-      CodeUri: ./source/deployment.zip
+      Timeout: 20
+      Policies:
+        - Statement:
+          - Effect: "Allow"
+            Action:
+              - "ecs:DescribeContainerInstances"
+              - "ecs:ListClusters"
+              - "ecs:ListContainerInstances"
+              - "ecs:UpdateContainerInstancesState"
+            Resource: "*"
+      CodeUri: ./source/handler.zip
       Events:
-        SpotWarningForSpoptimize:
+        SpotInterruptionWarning:
           Type: CloudWatchEvent
           Properties:
             Pattern:

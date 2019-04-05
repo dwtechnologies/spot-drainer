@@ -5,8 +5,8 @@ The two-minute warning for Spot instances is available via Amazon CloudWatch Eve
 
 This Lambda function reacts to such CloudWatch event annd set a spot ec2 instance to **DRAINING** state if the instance is used in an ECS cluster.
 
-##### CloudWatchEvent
 
+### CloudWatch event
 ```json
 {
   "version": "0",
@@ -27,31 +27,25 @@ This Lambda function reacts to such CloudWatch event annd set a spot ec2 instanc
 ```
 
 
+### Deployment requirements
+- docker
+- make
+- aws cli
 
-##### Build
 
-```sh
-cd source; GOOS=linux go build -o main handler.go && zip deployment.zip main
-aws cloudformation package \
-	--template-file sam.yaml \
-	--output-template-file output_sam.yaml \
-	--s3-bucket <some-bucket>
+### Deployment
+Use the included `Makefile` to deploy the resources.
+
+The `OWNER` env var is for tagging. So you can set this to what you want.
+The `ENVIRONMENT` env var is also for naming + tagging, but will also be included in CloudWatch logs.
+This so you can make out differences between dev, test and prod etc. if you're running them on the same AWS Account.
+
+```bash
+AWS_PROFILE=my-profile AWS_REGION=region OWNER=TeamName S3_BUCKET=my-artifact-bucket ECS_CLUSTER=target-ecs-cluster make deploy
 ```
 
-
-
-##### Deploy
-
-```sh
-aws cloudformation deploy \
-	--template-file output_sam.yaml \
-	--capabilities CAPABILITY_IAM \
-	--stack-name <some-name> \
-	--no-fail-on-empty-changeset
+Example
+```bash
+AWS_PROFILE=default AWS_REGION=eu-west-1 OWNER=cloudops S3_BUCKET=my-artifact-bucket ECS_CLUSTER=cluster-one-prod make deploy
 ```
 
-
-##### Test (SAM CLI)
-```sh
-AWS_PROFILE=<some-profile> sam local invoke spotDrainer --event sample_event.json --template sam.yaml
-```
