@@ -1,6 +1,6 @@
 # spot-drainer (deprecated)
-**As per Sep 27, 2019 Amazon supports automated draining for spot instances running ECS services.**
-[announcement](https://aws.amazon.com/about-aws/whats-new/2019/09/amazon-ecs-supports-automated-draining-for-spot-instances-running-ecs-services/)
+**As per Sep 27, 2019 Amazon supports automated draining for spot instances running ECS services
+([announcement](https://aws.amazon.com/about-aws/whats-new/2019/09/amazon-ecs-supports-automated-draining-for-spot-instances-running-ecs-services/)).**
 
 **Codebase will be left for educational purpose.**
 
