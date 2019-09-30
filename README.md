@@ -1,7 +1,8 @@
 # spot-drainer (deprecated)
-As per Sep 27, 2019 Amazon supports automated draining for spot instances running ECS services.
+**As per Sep 27, 2019 Amazon supports automated draining for spot instances running ECS services.
 [announcement](https://aws.amazon.com/about-aws/whats-new/2019/09/amazon-ecs-supports-automated-draining-for-spot-instances-running-ecs-services/)
-codebase will be left for educational purpose.
+
+codebase will be left for educational purpose.**
 
 Amazon EC2 Spot Instances offer spare compute capacity available in the AWS cloud at steep discounts compared to On-Demand instances.
 Spot Instances can be interrupted by EC2 with two minutes of notification when EC2 needs the capacity back.
